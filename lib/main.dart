@@ -32,7 +32,7 @@ class MainApp extends StatelessWidget {
           builder: (context, state) {
             return state.maybeWhen(
               orElse: () => const AuthPage(),
-              authenticated: (authToken) => const DashboardPage(),
+              authenticated: (_) => const DashboardPage(),
               loading: () => const Scaffold(
                 body: Center(child: CircularProgressIndicator()),
               ),

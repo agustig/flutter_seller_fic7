@@ -31,10 +31,7 @@ class HomePage extends StatelessWidget {
               children: [
                 SizedBox(height: Dimensions.paddingSizeSmall),
                 OngoingOrderWidget(),
-
-                // CompletedOrderWidget(callback: ),
                 SizedBox(height: Dimensions.paddingSizeSmall),
-
                 SizedBox(height: Dimensions.paddingSizeSmall),
               ],
             ),
