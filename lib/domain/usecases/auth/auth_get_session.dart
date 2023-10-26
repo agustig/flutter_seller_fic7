@@ -1,13 +1,14 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter_seller_fic7/domain/entities/auth.dart';
 import 'package:flutter_seller_fic7/domain/repositories/auth_repository.dart';
 import 'package:flutter_seller_fic7/utils/failure.dart';
 
-class AuthGetToken {
+class AuthGetSession {
   final AuthRepository repository;
 
-  AuthGetToken(this.repository);
+  AuthGetSession(this.repository);
 
-  Future<Either<Failure, String?>> execute() {
-    return repository.getAuthToken();
+  Future<Either<Failure, Auth?>> execute() {
+    return repository.getSession();
   }
 }

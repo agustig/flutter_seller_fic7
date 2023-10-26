@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_seller_fic7/data/data_sources/auth_local_data_source.dart';
 import 'package:flutter_seller_fic7/data/data_sources/auth_remote_data_source.dart';
+import 'package:flutter_seller_fic7/data/models/auth_model.dart';
 import 'package:flutter_seller_fic7/domain/entities/auth.dart';
 import 'package:flutter_seller_fic7/domain/repositories/auth_repository.dart';
 import 'package:flutter_seller_fic7/utils/exceptions.dart';
@@ -78,9 +79,23 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, String?>> getAuthToken() async {
+  Future<Either<Failure, Auth?>> getSession() async {
     try {
-      final result = await localDataSource.getAuthToken();
+      final result = await localDataSource.getSession();
+      if (result != null) {
+        return Right(result.toEntity());
+      } else {
+        return const Right(null);
+      }
+    } on DatabaseException catch (e) {
+      return Left(DatabaseFailure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> removeSession() async {
+    try {
+      final result = await localDataSource.removeSession();
       return Right(result);
     } on DatabaseException catch (e) {
       return Left(DatabaseFailure(e.message));
@@ -88,19 +103,11 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> removeAuthToken() async {
+  Future<Either<Failure, bool>> saveSession(Auth session) async {
     try {
-      final result = await localDataSource.removeAuthToken();
-      return Right(result);
-    } on DatabaseException catch (e) {
-      return Left(DatabaseFailure(e.message));
-    }
-  }
-
-  @override
-  Future<Either<Failure, bool>> saveAuthToken(String authToken) async {
-    try {
-      final result = await localDataSource.saveAuthToken(authToken);
+      final result = await localDataSource.saveSession(
+        AuthModel.fromEntity(session),
+      );
       return Right(result);
     } on DatabaseException catch (e) {
       return Left(DatabaseFailure(e.message));

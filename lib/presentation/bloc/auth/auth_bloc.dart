@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_seller_fic7/domain/usecases/auth/auth_get_token.dart';
+import 'package:flutter_seller_fic7/domain/entities/auth.dart';
+import 'package:flutter_seller_fic7/domain/usecases/auth/auth_get_session.dart';
 import 'package:flutter_seller_fic7/domain/usecases/auth/auth_login.dart';
 import 'package:flutter_seller_fic7/domain/usecases/auth/auth_logout.dart';
 import 'package:flutter_seller_fic7/domain/usecases/auth/auth_register.dart';
@@ -19,7 +20,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthLogout _authLogout;
   final AuthSaveToken _authSaveToken;
   final AuthRemoveToken _authRemoveToken;
-  final AuthGetToken _authGetToken;
+  final AuthGetSession _authGetToken;
 
   AuthBloc({
     required AuthLogin authLogin,
@@ -27,7 +28,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required AuthLogout authLogout,
     required AuthSaveToken authSaveToken,
     required AuthRemoveToken authRemoveToken,
-    required AuthGetToken authGetToken,
+    required AuthGetSession authGetToken,
   })  : _authLogin = authLogin,
         _authRegister = authRegister,
         _authLogout = authLogout,
@@ -45,15 +46,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(const _Loading());
 
     try {
-      late String currentToken;
+      late Auth currentSession;
       final loginResult = await _authLogin.execute(
           email: event.email, password: event.password);
       loginResult.fold(
         (failure) => throw failure,
-        (authData) => currentToken = authData.token,
+        (authData) => currentSession = authData,
       );
 
-      final saveToken = await _authSaveToken.execute(currentToken);
+      final saveToken = await _authSaveToken.execute(currentSession);
       saveToken.fold(
         (failure) => throw failure,
         (_) => emit(const _Loaded('Login successfully')),
@@ -69,7 +70,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(const _Loading());
 
     try {
-      late String currentToken;
+      late Auth currentSession;
       final registerResult = await _authRegister.execute(
         name: event.name,
         email: event.email,
@@ -78,10 +79,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       registerResult.fold(
         (failure) => throw failure,
-        (authData) => currentToken = authData.token,
+        (authData) => currentSession = authData,
       );
 
-      final saveToken = await _authSaveToken.execute(currentToken);
+      final saveToken = await _authSaveToken.execute(currentSession);
       saveToken.fold(
         (failure) => throw failure,
         (success) => emit(const _Loaded('Register successfully')),
@@ -97,16 +98,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(const _Loading());
     try {
       bool isLoggedOutFromRemote = false;
-      late String? authToken;
+      late Auth? authSession;
 
       final gettingToken = await _authGetToken.execute();
       gettingToken.fold(
         (failure) => throw failure,
-        (token) => authToken = token,
+        (token) => authSession = token,
       );
 
-      if (authToken != null) {
-        final logoutRemoteResult = await _authLogout.execute(authToken!);
+      if (authSession != null) {
+        final logoutRemoteResult =
+            await _authLogout.execute(authSession!.token);
         logoutRemoteResult.fold(
           (failure) => throw failure,
           (status) => isLoggedOutFromRemote = status,

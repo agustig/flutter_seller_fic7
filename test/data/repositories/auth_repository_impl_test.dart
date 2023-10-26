@@ -25,7 +25,8 @@ void main() {
     );
   });
 
-  const tAuthModel = testAuthModel;
+  const tSessionModel = testAuthModel;
+  const tSession = testAuth;
   const tAuth = testAuth;
 
   group('login function:', () {
@@ -42,7 +43,7 @@ void main() {
     test('should return a Auth Entity when data source execute is success',
         () async {
       // Arrange
-      when(() => mockRemoteCaller()).thenAnswer((_) async => tAuthModel);
+      when(() => mockRemoteCaller()).thenAnswer((_) async => tSessionModel);
       // Act
       final call = await authRepositoryCaller();
       // Assert
@@ -135,7 +136,7 @@ void main() {
     test('should return a success message when data source execute is success',
         () async {
       // Arrange
-      when(() => mockRemoteCaller()).thenAnswer((_) async => tAuthModel);
+      when(() => mockRemoteCaller()).thenAnswer((_) async => tSessionModel);
       // Act
       final call = await authRepositoryCaller();
       // Assert
@@ -256,19 +257,20 @@ void main() {
   });
 
   group('getAuthToken function:', () {
-    final tAuthToken = testAuthModel.token;
-    authRepositoryCaller() => authRepository.getAuthToken();
-    mockLocalCaller() => mockLocalDataSource.getAuthToken();
+    const tSessionModel = testAuthModel;
+    const tSession = testAuth;
+    authRepositoryCaller() => authRepository.getSession();
+    mockLocalCaller() => mockLocalDataSource.getSession();
 
     test('should return a success message when data source execute is success',
         () async {
       // Arrange
-      when(() => mockLocalCaller()).thenAnswer((_) async => tAuthToken);
+      when(() => mockLocalCaller()).thenAnswer((_) async => tSessionModel);
       // Act
       final call = await authRepositoryCaller();
       // Assert
       verify(() => mockLocalCaller());
-      expect(call, equals(Right(tAuthToken)));
+      expect(call, equals(const Right(tSession)));
     });
 
     test(
@@ -286,8 +288,8 @@ void main() {
   });
 
   group('removeAuth function:', () {
-    authRepositoryCaller() => authRepository.removeAuthToken();
-    mockLocalCaller() => mockLocalDataSource.removeAuthToken();
+    authRepositoryCaller() => authRepository.removeSession();
+    mockLocalCaller() => mockLocalDataSource.removeSession();
 
     test('should return "true" when data source execute is success', () async {
       // Arrange
@@ -315,8 +317,8 @@ void main() {
   });
 
   group('saveAuthToken() function:', () {
-    authRepositoryCaller() => authRepository.saveAuthToken(tAuthModel.token);
-    mockLocalCaller() => mockLocalDataSource.saveAuthToken(tAuthModel.token);
+    authRepositoryCaller() => authRepository.saveSession(tSession);
+    mockLocalCaller() => mockLocalDataSource.saveSession(tSessionModel);
 
     test('should return "true" when data source execute is success', () async {
       // Arrange

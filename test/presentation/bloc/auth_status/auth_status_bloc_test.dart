@@ -17,7 +17,7 @@ void main() {
     authStatusBloc = AuthStatusBloc(mockAuthGetToken);
   });
 
-  final tAuthToken = testAuth.token;
+  const tSession = testAuth;
 
   test('initial setup should be unauthenticated', () {
     expect(authStatusBloc.state, const AuthStatusState.unauthenticated());
@@ -28,13 +28,13 @@ void main() {
       'should return [loading, authenticated] state when saved token is exist',
       build: () {
         when(() => mockAuthGetToken.execute())
-            .thenAnswer((_) async => Right(tAuthToken));
+            .thenAnswer((_) async => Right(tSession));
         return authStatusBloc;
       },
       act: (bloc) => bloc.add(const AuthStatusEvent.check()),
       expect: () => [
         const AuthStatusState.loading(),
-        AuthStatusState.authenticated(tAuthToken)
+        AuthStatusState.authenticated(tSession)
       ],
     );
 

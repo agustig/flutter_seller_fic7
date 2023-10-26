@@ -14,7 +14,7 @@ void main() {
     usecase = AuthRemoveToken(mockRepository);
   });
 
-  mockRepositoryCaller() => mockRepository.removeAuthToken();
+  mockRepositoryCaller() => mockRepository.removeSession();
 
   usecaseCaller() => usecase.execute();
 

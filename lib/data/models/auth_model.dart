@@ -15,6 +15,13 @@ class AuthModel extends Equatable {
     );
   }
 
+  factory AuthModel.fromEntity(Auth entity) {
+    return AuthModel(
+      token: entity.token,
+      user: UserModel.fromEntity(entity.user),
+    );
+  }
+
   Auth toEntity() {
     return Auth(token: token, user: user.toEntity());
   }

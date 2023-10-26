@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_seller_fic7/data/data_sources/auth_local_data_source.dart';
 import 'package:flutter_seller_fic7/utils/exceptions.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -16,70 +18,71 @@ void main() {
         AuthLocalDataSourceImpl(sharedPreferences: mockSharedPreferences);
   });
 
-  const prefKey = 'auth_token';
+  const prefKey = 'session';
   const tAuthModel = testAuthModel;
-  final tAuthToken = tAuthModel.token;
+  final tAuthModelJson = json.encode(tAuthModel.toMap());
 
-  group('getAuthToken function:', () {
-    test('should return authToken when process is successfully', () async {
+  group('getSession function:', () {
+    test('should return session when process is successfully', () async {
       // Arrange
       when(() => mockSharedPreferences.getString(prefKey))
-          .thenAnswer((_) => tAuthToken);
+          .thenReturn(tAuthModelJson);
       // Act
-      final call = await dataSource.getAuthToken();
+      final call = await dataSource.getSession();
       // Assert
-      expect(call, tAuthToken);
+      expect(call, tAuthModel);
     });
 
-    test('should return null when saved token is null', () async {
+    test('should return null when saved session is null', () async {
       // Arrange
       when(() => mockSharedPreferences.getString(prefKey))
           .thenAnswer((_) => null);
       // Act
-      final call = await dataSource.getAuthToken();
+      final call = await dataSource.getSession();
       // Assert
       expect(call, null);
     });
 
-    test('should return DatabaseException when getting saved token is error',
+    test('should return DatabaseException when getting saved session is error',
         () {
       // Arrange
       when(() => mockSharedPreferences.getString(prefKey))
           .thenThrow(Exception());
       // Act
-      final call = dataSource.getAuthToken();
+      final call = dataSource.getSession();
       // Assert
       expect(() => call, throwsA(isA<DatabaseException>()));
     });
   });
 
-  group('removeToken function:', () {
-    test('should return true when remove token is successfully', () async {
+  group('removeSession function:', () {
+    test('should return true when remove session is successfully', () async {
       // Arrange
       when(() => mockSharedPreferences.remove(prefKey))
           .thenAnswer((_) async => true);
       // Act
-      final call = await dataSource.removeAuthToken();
+      final call = await dataSource.removeSession();
       // Assert
       expect(call, true);
     });
 
-    test('should return DatabaseException when remove token is unsuccessfully',
+    test(
+        'should return DatabaseException when remove session is unsuccessfully',
         () async {
       // Arrange
       when(() => mockSharedPreferences.remove(prefKey))
           .thenAnswer((_) async => false);
       // Act
-      final call = dataSource.removeAuthToken();
+      final call = dataSource.removeSession();
       // Assert
       expect(() => call, throwsA(isA<DatabaseException>()));
     });
 
-    test('should return DatabaseException when saved token is error', () {
+    test('should return DatabaseException when saved session is error', () {
       // Arrange
       when(() => mockSharedPreferences.remove(prefKey)).thenThrow(Exception());
       // Act
-      final call = dataSource.removeAuthToken();
+      final call = dataSource.removeSession();
       // Assert
       expect(() => call, throwsA(isA<DatabaseException>()));
     });
@@ -88,31 +91,31 @@ void main() {
   group('saveToken function:', () {
     test('should return true when save token is successfully', () async {
       // Arrange
-      when(() => mockSharedPreferences.setString(prefKey, tAuthToken))
+      when(() => mockSharedPreferences.setString(prefKey, tAuthModelJson))
           .thenAnswer((_) async => true);
       // Act
-      final call = await dataSource.saveAuthToken(tAuthModel.token);
+      final call = await dataSource.saveSession(tAuthModel);
       // Assert
       expect(call, true);
     });
 
-    test('should return DatabaseException when save token is unsuccessfully',
+    test('should return DatabaseException when save session is unsuccessfully',
         () async {
       // Arrange
-      when(() => mockSharedPreferences.setString(prefKey, tAuthToken))
+      when(() => mockSharedPreferences.setString(prefKey, tAuthModelJson))
           .thenAnswer((_) async => false);
       // Act
-      final call = dataSource.saveAuthToken(tAuthModel.token);
+      final call = dataSource.saveSession(tAuthModel);
       // Assert
       expect(() => call, throwsA(isA<DatabaseException>()));
     });
 
-    test('should return DatabaseException when saved token is error', () {
+    test('should return DatabaseException when saved session is error', () {
       // Arrange
-      when(() => mockSharedPreferences.setString(prefKey, tAuthToken))
+      when(() => mockSharedPreferences.setString(prefKey, tAuthModelJson))
           .thenThrow(Exception());
       // Act
-      final call = dataSource.saveAuthToken(tAuthModel.token);
+      final call = dataSource.saveSession(tAuthModel);
       // Assert
       expect(() => call, throwsA(isA<DatabaseException>()));
     });

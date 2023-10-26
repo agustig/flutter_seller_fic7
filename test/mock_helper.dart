@@ -2,7 +2,7 @@ import 'package:flutter_seller_fic7/data/api/remote_api.dart';
 import 'package:flutter_seller_fic7/data/data_sources/auth_local_data_source.dart';
 import 'package:flutter_seller_fic7/data/data_sources/auth_remote_data_source.dart';
 import 'package:flutter_seller_fic7/domain/repositories/auth_repository.dart';
-import 'package:flutter_seller_fic7/domain/usecases/auth/auth_get_token.dart';
+import 'package:flutter_seller_fic7/domain/usecases/auth/auth_get_session.dart';
 import 'package:flutter_seller_fic7/domain/usecases/auth/auth_login.dart';
 import 'package:flutter_seller_fic7/domain/usecases/auth/auth_logout.dart';
 import 'package:flutter_seller_fic7/domain/usecases/auth/auth_register.dart';
@@ -34,7 +34,7 @@ class MockAuthLogin extends Mock implements AuthLogin {}
 
 class MockAuthLogout extends Mock implements AuthLogout {}
 
-class MockAuthGetToken extends Mock implements AuthGetToken {}
+class MockAuthGetToken extends Mock implements AuthGetSession {}
 
 class MockAuthRemoveToken extends Mock implements AuthRemoveToken {}
 

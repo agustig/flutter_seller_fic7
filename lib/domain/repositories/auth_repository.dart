@@ -16,7 +16,7 @@ abstract class AuthRepository {
   });
 
   Future<Either<Failure, bool>> logout(String authToken);
-  Future<Either<Failure, String?>> getAuthToken();
-  Future<Either<Failure, bool>> removeAuthToken();
-  Future<Either<Failure, bool>> saveAuthToken(String token);
+  Future<Either<Failure, Auth?>> getSession();
+  Future<Either<Failure, bool>> removeSession();
+  Future<Either<Failure, bool>> saveSession(Auth session);
 }

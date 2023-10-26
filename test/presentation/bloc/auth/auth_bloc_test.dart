@@ -35,8 +35,7 @@ void main() {
     );
   });
 
-  const tAuth = testAuth;
-  final tAuthToken = tAuth.token;
+  const tSession = testAuth;
 
   test('initial setup should be initial state', () {
     expect(authBloc.state, const AuthState.initial());
@@ -47,7 +46,7 @@ void main() {
           email: 'marlee.ledner@example.net',
           password: 'password',
         );
-    mockSaveTokenUsecaseCaller() => mockAuthSaveToken.execute(tAuthToken);
+    mockSaveTokenUsecaseCaller() => mockAuthSaveToken.execute(tSession);
 
     const eventCaller = AuthEvent.login(
       email: 'marlee.ledner@example.net',
@@ -66,7 +65,7 @@ void main() {
       'should emit [loading, loaded] on AuthState when execute is successfully',
       build: () {
         when(() => mockLoginUsecaseCaller())
-            .thenAnswer((_) async => const Right(tAuth));
+            .thenAnswer((_) async => const Right(tSession));
         when(() => mockSaveTokenUsecaseCaller())
             .thenAnswer((_) async => const Right(true));
         return authBloc;
@@ -138,7 +137,7 @@ void main() {
       'should emit [Loading, error] on AuthState when database is error',
       build: () {
         when(() => mockLoginUsecaseCaller())
-            .thenAnswer((_) async => const Right(tAuth));
+            .thenAnswer((_) async => const Right(tSession));
         when(() => mockSaveTokenUsecaseCaller()).thenAnswer(
             (_) async => const Left(DatabaseFailure('Database failure')));
         return authBloc;
@@ -162,7 +161,7 @@ void main() {
           password: 'password',
           passwordConfirmation: 'password',
         );
-    mockSaveTokenUsecaseCaller() => mockAuthSaveToken.execute(tAuthToken);
+    mockSaveTokenUsecaseCaller() => mockAuthSaveToken.execute(tSession);
 
     const eventCaller = AuthEvent.register(
       name: 'Mr. Manuela Zboncak III',
@@ -183,7 +182,7 @@ void main() {
       'should emit [loading, loaded, authenticated] on AuthState when execute is successfully',
       build: () {
         when(() => mockRegisterUsecaseCaller())
-            .thenAnswer((_) async => const Right(tAuth));
+            .thenAnswer((_) async => const Right(tSession));
         when(() => mockSaveTokenUsecaseCaller())
             .thenAnswer((_) async => const Right(true));
         return authBloc;
@@ -255,7 +254,7 @@ void main() {
       'should emit [Loading, error] on AuthState when database is error',
       build: () {
         when(() => mockRegisterUsecaseCaller())
-            .thenAnswer((_) async => const Right(tAuth));
+            .thenAnswer((_) async => const Right(tSession));
         when(() => mockSaveTokenUsecaseCaller()).thenAnswer(
             (_) async => const Left(DatabaseFailure('Database failure')));
         return authBloc;
@@ -273,7 +272,7 @@ void main() {
   });
 
   group('AuthEvent.logout():', () {
-    mockLogoutUsecaseCaller() => mockAuthLogout.execute(tAuthToken);
+    mockLogoutUsecaseCaller() => mockAuthLogout.execute(tSession.token);
     mockRemoveTokenUsecaseCaller() => mockAuthRemoveToken.execute();
     mockTokenCheckCaller() => mockAuthGetToken.execute();
 
@@ -282,7 +281,7 @@ void main() {
     blocTest<AuthBloc, AuthState>(
       'should emit [loading, loaded] on AuthState when execute is successfully',
       build: () {
-        final tokenStatusResult = [tAuthToken, null];
+        final tokenStatusResult = [tSession, null];
         when(() => mockLogoutUsecaseCaller())
             .thenAnswer((_) async => const Right(true));
         when(() => mockRemoveTokenUsecaseCaller())
@@ -311,7 +310,7 @@ void main() {
         when(() => mockLogoutUsecaseCaller()).thenAnswer((_) async =>
             const Left(ConnectionFailure('Failed connect to the Network')));
         when(() => mockTokenCheckCaller())
-            .thenAnswer((_) async => Right(tAuthToken));
+            .thenAnswer((_) async => const Right(tSession));
         return authBloc;
       },
       act: (bloc) {
@@ -333,7 +332,7 @@ void main() {
         when(() => mockLogoutUsecaseCaller()).thenAnswer(
             (_) async => const Left(ServerFailure('Server Failure')));
         when(() => mockTokenCheckCaller())
-            .thenAnswer((_) async => Right(tAuthToken));
+            .thenAnswer((_) async => const Right(tSession));
         return authBloc;
       },
       act: (bloc) {
@@ -357,7 +356,7 @@ void main() {
         when(() => mockRemoveTokenUsecaseCaller()).thenAnswer(
             (_) async => const Left(DatabaseFailure('Database failure')));
         when(() => mockTokenCheckCaller())
-            .thenAnswer((_) async => Right(tAuthToken));
+            .thenAnswer((_) async => const Right(tSession));
         return authBloc;
       },
       act: (bloc) {

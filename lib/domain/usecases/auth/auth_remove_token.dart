@@ -8,6 +8,6 @@ class AuthRemoveToken {
   AuthRemoveToken(this.repository);
 
   Future<Either<Failure, bool>> execute() {
-    return repository.removeAuthToken();
+    return repository.removeSession();
   }
 }

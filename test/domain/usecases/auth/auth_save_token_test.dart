@@ -14,11 +14,11 @@ void main() {
     mockRepository = MockAuthRepository();
     usecase = AuthSaveToken(mockRepository);
   });
-  final tAuthToken = testAuth.token;
+  const tSession = testAuth;
 
-  mockRepositoryCaller() => mockRepository.saveAuthToken(tAuthToken);
+  mockRepositoryCaller() => mockRepository.saveSession(tSession);
 
-  usecaseCaller() => usecase.execute(tAuthToken);
+  usecaseCaller() => usecase.execute(tSession);
 
   test('should be a return true when execute is successfully', () async {
     // Arrange
