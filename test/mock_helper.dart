@@ -6,8 +6,8 @@ import 'package:flutter_seller_fic7/domain/usecases/auth/auth_get_session.dart';
 import 'package:flutter_seller_fic7/domain/usecases/auth/auth_login.dart';
 import 'package:flutter_seller_fic7/domain/usecases/auth/auth_logout.dart';
 import 'package:flutter_seller_fic7/domain/usecases/auth/auth_register.dart';
-import 'package:flutter_seller_fic7/domain/usecases/auth/auth_remove_token.dart';
-import 'package:flutter_seller_fic7/domain/usecases/auth/auth_save_token.dart';
+import 'package:flutter_seller_fic7/domain/usecases/auth/auth_remove_session.dart';
+import 'package:flutter_seller_fic7/domain/usecases/auth/auth_save_session.dart';
 import 'package:http/http.dart' as http;
 import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,9 +36,9 @@ class MockAuthLogout extends Mock implements AuthLogout {}
 
 class MockAuthGetToken extends Mock implements AuthGetSession {}
 
-class MockAuthRemoveToken extends Mock implements AuthRemoveToken {}
+class MockAuthRemoveToken extends Mock implements AuthRemoveSession {}
 
-class MockAuthSaveToken extends Mock implements AuthSaveToken {}
+class MockAuthSaveToken extends Mock implements AuthSaveSession {}
 
 // Mock Mixins
 class MockRemoteApi with RemoteApi {}

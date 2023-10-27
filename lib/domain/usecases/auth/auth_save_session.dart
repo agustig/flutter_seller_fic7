@@ -3,10 +3,10 @@ import 'package:flutter_seller_fic7/domain/entities/auth.dart';
 import 'package:flutter_seller_fic7/domain/repositories/auth_repository.dart';
 import 'package:flutter_seller_fic7/utils/failure.dart';
 
-class AuthSaveToken {
+class AuthSaveSession {
   final AuthRepository repository;
 
-  AuthSaveToken(this.repository);
+  AuthSaveSession(this.repository);
 
   Future<Either<Failure, bool>> execute(Auth session) {
     return repository.saveSession(session);

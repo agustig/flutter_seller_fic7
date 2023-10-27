@@ -5,8 +5,8 @@ import 'package:flutter_seller_fic7/domain/usecases/auth/auth_get_session.dart';
 import 'package:flutter_seller_fic7/domain/usecases/auth/auth_login.dart';
 import 'package:flutter_seller_fic7/domain/usecases/auth/auth_logout.dart';
 import 'package:flutter_seller_fic7/domain/usecases/auth/auth_register.dart';
-import 'package:flutter_seller_fic7/domain/usecases/auth/auth_remove_token.dart';
-import 'package:flutter_seller_fic7/domain/usecases/auth/auth_save_token.dart';
+import 'package:flutter_seller_fic7/domain/usecases/auth/auth_remove_session.dart';
+import 'package:flutter_seller_fic7/domain/usecases/auth/auth_save_session.dart';
 import 'package:flutter_seller_fic7/utils/failure.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -18,16 +18,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthLogin _authLogin;
   final AuthRegister _authRegister;
   final AuthLogout _authLogout;
-  final AuthSaveToken _authSaveToken;
-  final AuthRemoveToken _authRemoveToken;
+  final AuthSaveSession _authSaveToken;
+  final AuthRemoveSession _authRemoveToken;
   final AuthGetSession _authGetToken;
 
   AuthBloc({
     required AuthLogin authLogin,
     required AuthRegister authRegister,
     required AuthLogout authLogout,
-    required AuthSaveToken authSaveToken,
-    required AuthRemoveToken authRemoveToken,
+    required AuthSaveSession authSaveToken,
+    required AuthRemoveSession authRemoveToken,
     required AuthGetSession authGetToken,
   })  : _authLogin = authLogin,
         _authRegister = authRegister,

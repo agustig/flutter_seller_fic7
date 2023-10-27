@@ -2,12 +2,12 @@ import 'package:flutter_seller_fic7/data/data_sources/auth_local_data_source.dar
 import 'package:flutter_seller_fic7/data/data_sources/auth_remote_data_source.dart';
 import 'package:flutter_seller_fic7/data/repositories/auth_repository_impl.dart';
 import 'package:flutter_seller_fic7/domain/repositories/auth_repository.dart';
-import 'package:flutter_seller_fic7/domain/usecases/auth/auth_get_token.dart';
+import 'package:flutter_seller_fic7/domain/usecases/auth/auth_get_session.dart';
 import 'package:flutter_seller_fic7/domain/usecases/auth/auth_login.dart';
 import 'package:flutter_seller_fic7/domain/usecases/auth/auth_logout.dart';
 import 'package:flutter_seller_fic7/domain/usecases/auth/auth_register.dart';
-import 'package:flutter_seller_fic7/domain/usecases/auth/auth_remove_token.dart';
-import 'package:flutter_seller_fic7/domain/usecases/auth/auth_save_token.dart';
+import 'package:flutter_seller_fic7/domain/usecases/auth/auth_remove_session.dart';
+import 'package:flutter_seller_fic7/domain/usecases/auth/auth_save_session.dart';
 import 'package:flutter_seller_fic7/presentation/bloc/auth/auth_bloc.dart';
 import 'package:flutter_seller_fic7/presentation/bloc/auth_status/auth_status_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -35,9 +35,9 @@ void init() {
   locator.registerLazySingleton(() => AuthRegister(locator()));
   locator.registerLazySingleton(() => AuthLogin(locator()));
   locator.registerLazySingleton(() => AuthLogout(locator()));
-  locator.registerLazySingleton(() => AuthGetToken(locator()));
-  locator.registerLazySingleton(() => AuthSaveToken(locator()));
-  locator.registerLazySingleton(() => AuthRemoveToken(locator()));
+  locator.registerLazySingleton(() => AuthGetSession(locator()));
+  locator.registerLazySingleton(() => AuthSaveSession(locator()));
+  locator.registerLazySingleton(() => AuthRemoveSession(locator()));
 
   // Repositories
   locator.registerLazySingleton<AuthRepository>(

@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_seller_fic7/domain/usecases/auth/auth_save_token.dart';
+import 'package:flutter_seller_fic7/domain/usecases/auth/auth_save_session.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -7,12 +7,12 @@ import '../../../dummy_data/dummy_object.dart';
 import '../../../mock_helper.dart';
 
 void main() {
-  late final AuthSaveToken usecase;
+  late final AuthSaveSession usecase;
   late final MockAuthRepository mockRepository;
 
   setUpAll(() {
     mockRepository = MockAuthRepository();
-    usecase = AuthSaveToken(mockRepository);
+    usecase = AuthSaveSession(mockRepository);
   });
   const tSession = testAuth;
 
